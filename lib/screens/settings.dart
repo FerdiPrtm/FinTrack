@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:file_saver/file_saver.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -209,9 +210,14 @@ class SettingsTab extends StatelessWidget {
         mimeType: format == 'csv' ? MimeType.csv : MimeType.pdf,
       );
       if (!context.mounted) return;
+      final hint = kIsWeb
+          ? 'Laporan berhasil diekspor — cek folder Unduhan browser'
+          : defaultTargetPlatform == TargetPlatform.android
+              ? 'Laporan berhasil diekspor — pilih lokasi & cek folder Downloads'
+              : 'Laporan berhasil diekspor';
       ScaffoldMessenger.of(context)
         ..clearSnackBars()
-        ..showSnackBar(const SnackBar(content: Text('Laporan berhasil diekspor')));
+        ..showSnackBar(SnackBar(content: Text(hint)));
     } catch (e) {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context)
